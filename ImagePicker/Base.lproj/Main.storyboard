@@ -51,7 +51,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="32F-1Q-jev">
                                 <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                 <items>
-                                    <barButtonItem title="Share" id="RpQ-Nk-LS8">
+                                    <barButtonItem title="Share" image="square.and.arrow.up" catalog="system" id="RpQ-Nk-LS8">
                                         <connections>
                                             <action selector="shareMeme:" destination="BYZ-38-t0r" id="bCr-AT-CtU"/>
                                         </connections>
@@ -98,4 +98,7 @@
             <point key="canvasLocation" x="139" y="127"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="square.and.arrow.up" catalog="system" width="56" height="64"/>
+    </resources>
 </document>

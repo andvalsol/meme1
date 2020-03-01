@@ -130,6 +130,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             let activityViewController = UIActivityViewController(activityItems: [meme], applicationActivities: nil)
             activityViewController.completionWithItemsHandler = { activity, success, items, error in
                 if success {
+                    // Save the image
                     UIImageWriteToSavedPhotosAlbum(generatedMemeImage, nil, nil, nil)
                 }
             }

@@ -24,13 +24,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet weak var cameraPicker: UIBarButtonItem!
     
-    let memeTextAttributes: [NSAttributedString.Key: Any] = [
-        NSAttributedString.Key.strokeColor: UIColor.black,
-        NSAttributedString.Key.foregroundColor: UIColor.white,
-        NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSAttributedString.Key.strokeWidth: -3.0
-    ]
-    
     // Initialize the UIImagePickerController lazily, since it might not be used
     private lazy var pickerViewController = UIImagePickerController()
     
@@ -39,15 +32,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Set the delegate for the picker view
         pickerViewController.delegate = self
         
-        topTextView.defaultTextAttributes = memeTextAttributes
-        topTextView.delegate = self
-        topTextView.textAlignment = .center
-        
-        bottomTextView.defaultTextAttributes = memeTextAttributes
-        bottomTextView.textAlignment = .center
-        bottomTextView.delegate = self
-        
         shareToolbarButton.isEnabled = false
+        
+        configureTextField(topTextView, text: "TOP TEXT")
+        configureTextField(bottomTextView, text: "BOTTOM TEXT")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,6 +51,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewWillDisappear(animated)
         // Unsubscribe the keyboard notification
         unsubscribeKeyboardNotification()
+    }
+    
+    private func configureTextField(_ textField: UITextField, text: String) {
+            textField.text = text
+            textField.delegate = self
+            textField.defaultTextAttributes = [
+                .font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+                .foregroundColor: UIColor.white,
+                .strokeColor: UIColor.black,
+                .strokeWidth: -3.0
+            ]
+        textField.textAlignment = .center
     }
     
     private func generateMemedImage() -> UIImage {
@@ -141,6 +141,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Reset all views
         topTextView.text = "TOP TEXT"
         bottomTextView.text = "BOTTOM TEXT"
+        
         imagePickerView.image = nil
         shareToolbarButton.isEnabled = false
     }

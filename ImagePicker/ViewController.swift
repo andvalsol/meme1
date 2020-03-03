@@ -24,6 +24,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet weak var cameraPicker: UIBarButtonItem!
     
+    var topText = "TOP TEXT"
+    var bottomText = "BOTTOM TEXT"
+    var memeImage: UIImage? = nil
+    
     // Initialize the UIImagePickerController lazily, since it might not be used
     private lazy var pickerViewController = UIImagePickerController()
     
@@ -32,10 +36,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Set the delegate for the picker view
         pickerViewController.delegate = self
         
-        shareToolbarButton.isEnabled = false
+        configureTextField(topTextView, text: topText)
+        configureTextField(bottomTextView, text: bottomText)
         
-        configureTextField(topTextView, text: "TOP TEXT")
-        configureTextField(bottomTextView, text: "BOTTOM TEXT")
+        if memeImage != nil {
+            shareToolbarButton.isEnabled = true
+        } else {
+            shareToolbarButton.isEnabled = false
+        }
+        
+        imagePickerView.image = memeImage
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -131,10 +141,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             activityViewController.completionWithItemsHandler = { activity, success, items, error in
                 if success {
                     // Save the image
-                    UIImageWriteToSavedPhotosAlbum(generatedMemeImage, nil, nil, nil)
+                    self.saveMeme(meme)
                 }
             }
         }
+    }
+    
+    private func saveMeme(_ meme: Meme) {
+        UIImageWriteToSavedPhotosAlbum(meme.memeImage, nil, nil, nil)
+        
+        // Save each meme into the AppDelegate memes instance
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.memes.append(meme)
     }
     
     @IBAction func cancelMeme(_ sender: Any) {
@@ -144,6 +162,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         imagePickerView.image = nil
         shareToolbarButton.isEnabled = false
+        
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func takePhoto(_ sender: Any) {

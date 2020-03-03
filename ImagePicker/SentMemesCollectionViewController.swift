@@ -29,14 +29,14 @@ class SentMemesCollectionViewController: UICollectionViewController {
     }
     
     @IBAction func addMeme(_ sender: Any) {
-        let memeViewController = storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        let memeViewController = storyboard?.instantiateViewController(withIdentifier: "ViewController") as! MemeEditorViewController
+        
+        memeViewController.modalPresentationStyle = .fullScreen
+        memeViewController.callback = {
+            self.collectionView.reloadData()
+        }
         
         present(memeViewController, animated: true, completion: nil)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        collectionView.reloadData()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -55,7 +55,7 @@ class SentMemesCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let meme = appDelegate.memes[indexPath.row]
         
-        let viewController = storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        let viewController = storyboard?.instantiateViewController(withIdentifier: "ViewController") as! MemeEditorViewController
         
         viewController.bottomText = meme.bottomText
         viewController.topText = meme.topText

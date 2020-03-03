@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var bottomToolbar: UIToolbar!
     
@@ -27,6 +27,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var topText = "TOP TEXT"
     var bottomText = "BOTTOM TEXT"
     var memeImage: UIImage? = nil
+    
+    var callback: (() -> Void)? = nil
     
     // Initialize the UIImagePickerController lazily, since it might not be used
     private lazy var pickerViewController = UIImagePickerController()
@@ -61,6 +63,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewWillDisappear(animated)
         // Unsubscribe the keyboard notification
         unsubscribeKeyboardNotification()
+        
+        if let callback = callback {
+            // Execute the callback
+            callback()
+        }
     }
     
     private func configureTextField(_ textField: UITextField, text: String) {
@@ -137,13 +144,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             // Create a meme object
             let meme = Meme(topText: topTextView.text!, bottomText: bottomTextView.text!, originalImage: originalImage, memeImage: generatedMemeImage)
             
-            let activityViewController = UIActivityViewController(activityItems: [meme], applicationActivities: nil)
-            activityViewController.completionWithItemsHandler = { activity, success, items, error in
-                if success {
-                    // Save the image
-                    self.saveMeme(meme)
-                }
+            for i in 1...7 {
+                self.saveMeme(meme)
             }
+            // Save the image
+//            self.saveMeme(meme)
+            
+//            let activityViewController = UIActivityViewController(activityItems: [meme], applicationActivities: nil)
+//            activityViewController.completionWithItemsHandler = { activity, success, items, error in
+//                if success {
+//                    // Save the image
+//                    self.saveMeme(meme)
+//                }
+//            }
+//
+//            present(activityViewController, animated: true, completion: nil)
         }
     }
     
@@ -199,7 +214,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
 }
 
-extension ViewController: UITextFieldDelegate {
+extension MemeEditorViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)   // removed self
         return false

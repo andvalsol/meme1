@@ -64,5 +64,7 @@
 	<string>This app needs camera permission in order to produce memes</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This app needs photo library addition permission in order to save memes</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs the photo library usage in order to save memes</string>
 </dict>
 </plist>

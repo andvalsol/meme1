@@ -31,7 +31,11 @@ class MemeTableViewController: UITableViewController {
     }
     
     @IBAction func addMeme(_ sender: Any) {
-        let memeViewController = storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        let memeViewController = storyboard?.instantiateViewController(withIdentifier: "ViewController") as! MemeEditorViewController
+        
+        memeViewController.callback = {
+                   self.tableView.reloadData()
+               }
         
         present(memeViewController, animated: true, completion: nil)
     }
@@ -54,11 +58,11 @@ class MemeTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let meme = appDelegate.memes[indexPath.row]
         
-        let viewController = storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        let viewController = storyboard?.instantiateViewController(withIdentifier: "ViewController") as! MemeEditorViewController
         
-        viewController.bottomTextView.text = meme.bottomText
-        viewController.topTextView.text = meme.topText
-        viewController.imagePickerView.image = meme.memeImage
+        viewController.bottomText = meme.bottomText
+        viewController.topText = meme.topText
+        viewController.memeImage = meme.memeImage
         
         present(viewController, animated: true, completion: nil)
     }

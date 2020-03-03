@@ -144,21 +144,15 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             // Create a meme object
             let meme = Meme(topText: topTextView.text!, bottomText: bottomTextView.text!, originalImage: originalImage, memeImage: generatedMemeImage)
             
-            for i in 1...7 {
-                self.saveMeme(meme)
+            let activityViewController = UIActivityViewController(activityItems: [meme], applicationActivities: nil)
+            activityViewController.completionWithItemsHandler = { activity, success, items, error in
+                if success {
+                    // Save the image
+                    self.saveMeme(meme)
+                }
             }
-            // Save the image
-//            self.saveMeme(meme)
-            
-//            let activityViewController = UIActivityViewController(activityItems: [meme], applicationActivities: nil)
-//            activityViewController.completionWithItemsHandler = { activity, success, items, error in
-//                if success {
-//                    // Save the image
-//                    self.saveMeme(meme)
-//                }
-//            }
-//
-//            present(activityViewController, animated: true, completion: nil)
+
+            present(activityViewController, animated: true, completion: nil)
         }
     }
     

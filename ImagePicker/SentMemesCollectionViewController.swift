@@ -31,7 +31,6 @@ class SentMemesCollectionViewController: UICollectionViewController {
     @IBAction func addMeme(_ sender: Any) {
         let memeViewController = storyboard?.instantiateViewController(withIdentifier: "ViewController") as! MemeEditorViewController
         
-        memeViewController.modalPresentationStyle = .fullScreen
         memeViewController.callback = {
             self.collectionView.reloadData()
         }
@@ -60,6 +59,7 @@ class SentMemesCollectionViewController: UICollectionViewController {
         viewController.bottomText = meme.bottomText
         viewController.topText = meme.topText
         viewController.memeImage = meme.memeImage
+        viewController.canEdit = false
         
         present(viewController, animated: true, completion: nil)
     }

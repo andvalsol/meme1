@@ -30,6 +30,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     var callback: (() -> Void)? = nil
     
+    var canEdit = true
+    
     // Initialize the UIImagePickerController lazily, since it might not be used
     private lazy var pickerViewController = UIImagePickerController()
     
@@ -48,6 +50,15 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
         
         imagePickerView.image = memeImage
+        
+        if !canEdit {
+            removeToolbars()
+        }
+    }
+    
+    private func removeToolbars() {
+        topToolbar.isHidden = true
+        bottomToolbar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -144,7 +155,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             // Create a meme object
             let meme = Meme(topText: topTextView.text!, bottomText: bottomTextView.text!, originalImage: originalImage, memeImage: generatedMemeImage)
             
-            let activityViewController = UIActivityViewController(activityItems: [meme], applicationActivities: nil)
+            let activityViewController = UIActivityViewController(activityItems: [generatedMemeImage], applicationActivities: nil)
             activityViewController.completionWithItemsHandler = { activity, success, items, error in
                 if success {
                     // Save the image

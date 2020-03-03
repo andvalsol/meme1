@@ -63,6 +63,7 @@ class MemeTableViewController: UITableViewController {
         viewController.bottomText = meme.bottomText
         viewController.topText = meme.topText
         viewController.memeImage = meme.memeImage
+        viewController.canEdit = false
         
         present(viewController, animated: true, completion: nil)
     }
